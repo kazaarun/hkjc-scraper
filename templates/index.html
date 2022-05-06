@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<body>
+<main role="main" class="container">
+
+      <div class="mt-5">
+        <h1>Race Results</h1>
+          <form action="/bet-results" id="race-form" class="needs-validation" method="post">
+              {% csrf_token %}
+          <div class="input-group mb-3">
+
+          <label>Race Date
+              <input id="date-input" name="date" class="form-control" type="date" required>
+              <span id="dateError" class="error" aria-live="polite"></span>
+          </label>
+
+          </div>
+              <div class="input-group mb-3">
+          <label>Race No.
+              <input id="race-input" name="race" class="form-control" type="number" max="99" min="1" required>
+          </label>
+
+          </div>
+              <button id="submit-btn" class="btn btn-primary" type="submit">Submit</button>
+          </form>
+      </div>
+
+    </main>
+
+<script>
+    {% if messages %}
+        {% for m in messages %}
+    alert('{{ m }}');
+        {% endfor %}
+    {% endif %}
+
+    const form  = document.getElementById('race-form');
+
+const date_input = document.getElementById('date-input');
+const race_input = document.getElementById('race-input');
+const submit_btn = document.getElementById('submit-btn');
+
+date_input.addEventListener('input', function (event) {
+
+  if (date_input.validity.valid) {
+      dateError.textContent = ''; // Reset the content of the message
+      dateError.className = 'error'; // Reset the visual state of the message
+
+      if (Date.parse(date_input.value)>Date.now()){
+          dateError.textContent = 'Please enter valid date.';
+          dateError.className = 'error active text-danger';
+      }
+  } else {
+      dateError.textContent = 'Please enter valid date.';
+      dateError.className = 'error active text-danger';  }
+});
+submit_btn.addEventListener('submit', function (event){
+    submit_btn.innerHTML='<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...'
+});
+
+
+</script>
+</body>
+
+</html>
